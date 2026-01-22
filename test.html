@@ -1,27 +1,361 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>eSIM Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eSIM Installation</title>
     <style>
-        .qr-button {
-            display: inline-block;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
-            border: 2px dashed #ccc;
-            text-align: center;
-            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
             color: #333;
-            font-family: sans-serif;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .qr-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .qr-code {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .qr-code img {
+            display: block;
+            width: 200px;
+            height: 200px;
+        }
+
+        .lpa-code {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            word-break: break-all;
+            color: #333;
+            margin-top: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9ff;
+        }
+
+        .instructions {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .instructions h3 {
+            color: #856404;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #856404;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .device-specific {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .device-specific h3 {
+            color: #1976d2;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .platform-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px;
+            background: white;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            color: #2196f3;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: #2196f3;
+            color: white;
+        }
+
+        .platform-content {
+            display: none;
+            font-size: 14px;
+            color: #1565c0;
+            line-height: 1.6;
+        }
+
+        .platform-content.active {
+            display: block;
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>📱 Install eSIM</h1>
+        <p class="subtitle">Follow the instructions for your device</p>
 
-    <h3>eSIM Installation Test</h3>
-    
-    <a href="LPA:1$consumer.e-sim.global$TN202406211135153CA7603D " class="qr-button">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=LPA:1$consumer.e-sim.global$TN202406211135153CA7603D" alt="QR Code">
-        <p><strong>Tap here to install eSIM</strong><br>(Works on mobile only)</p>
-    </a>
+        <div class="qr-container">
+            <div class="qr-code">
+                <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=LPA:1$consumer.e-sim.global$TN202406211135153CA7603D" alt="eSIM QR Code">
+            </div>
+            <p style="color: #666; font-size: 14px;">Scan with your camera app</p>
+            <div class="lpa-code" id="lpaCode">LPA:1$consumer.e-sim.global$TN202406211135153CA7603D</div>
+        </div>
 
+        <div class="buttons">
+            <button class="btn btn-primary" id="autoInstallBtn">🚀 Try Auto-Install</button>
+            <button class="btn btn-secondary" id="copyBtn">📋 Copy Activation Code</button>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <div class="instructions">
+            <h3>⚠️ Most Reliable Method:</h3>
+            <ol>
+                <li>Open your device's <strong>Camera app</strong></li>
+                <li>Point it at the QR code above</li>
+                <li>Tap the notification to install eSIM</li>
+            </ol>
+        </div>
+
+        <div class="device-specific">
+            <h3>📖 Manual Installation Guide</h3>
+            <div class="platform-tabs">
+                <div class="tab active" data-platform="ios">iOS/iPhone</div>
+                <div class="tab" data-platform="android">Android</div>
+            </div>
+            
+            <div class="platform-content active" data-platform="ios">
+                <ol>
+                    <li>Go to <strong>Settings</strong> → <strong>Cellular/Mobile Data</strong></li>
+                    <li>Tap <strong>Add eSIM</strong></li>
+                    <li>Choose <strong>Use QR Code</strong></li>
+                    <li>Scan the QR code above or tap <strong>Enter Details Manually</strong></li>
+                    <li>If manual, paste the activation code</li>
+                </ol>
+            </div>
+            
+            <div class="platform-content" data-platform="android">
+                <ol>
+                    <li>Go to <strong>Settings</strong> → <strong>Network & Internet</strong></li>
+                    <li>Tap <strong>SIMs</strong> or <strong>Mobile Network</strong></li>
+                    <li>Tap <strong>Add eSIM</strong> or <strong>Download eSIM</strong></li>
+                    <li>Choose <strong>Scan QR code</strong></li>
+                    <li>Scan the QR code above</li>
+                    <li>Or choose <strong>Enter activation code</strong> and paste</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lpaString = 'LPA:1$consumer.e-sim.global$TN202406211135153CA7603D';
+        
+        // Platform detection
+        function detectPlatform() {
+            const ua = navigator.userAgent.toLowerCase();
+            if (/iphone|ipad|ipod/.test(ua)) return 'ios';
+            if (/android/.test(ua)) return 'android';
+            return 'unknown';
+        }
+
+        // Auto-install attempt
+        document.getElementById('autoInstallBtn').addEventListener('click', function() {
+            const platform = detectPlatform();
+            const status = document.getElementById('status');
+            
+            if (platform === 'ios') {
+                status.className = 'status show error';
+                status.textContent = 'iOS does not support direct eSIM links. Please use the Camera app to scan the QR code or follow the manual instructions below.';
+                return;
+            }
+            
+            // Try Android LPA URL scheme
+            const lpaUrl = lpaString;
+            status.className = 'status show success';
+            status.textContent = 'Attempting to open eSIM installer...';
+            
+            // Create temporary link
+            const link = document.createElement('a');
+            link.href = lpaUrl;
+            link.click();
+            
+            // Check if it worked after a delay
+            setTimeout(() => {
+                if (document.visibilityState === 'visible') {
+                    status.className = 'status show error';
+                    status.textContent = 'Auto-install not supported on your device. Please use the Camera app to scan the QR code or follow manual instructions.';
+                }
+            }, 1000);
+        });
+
+        // Copy to clipboard
+        document.getElementById('copyBtn').addEventListener('click', async function() {
+            const status = document.getElementById('status');
+            try {
+                await navigator.clipboard.writeText(lpaString);
+                status.className = 'status show success';
+                status.textContent = '✓ Activation code copied! Now go to Settings to add eSIM manually.';
+                
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 3000);
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = lpaString;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    status.className = 'status show success';
+                    status.textContent = '✓ Activation code copied!';
+                } catch (err) {
+                    status.className = 'status show error';
+                    status.textContent = 'Could not copy. Please select and copy the code manually.';
+                }
+                document.body.removeChild(textArea);
+            }
+        });
+
+        // Platform tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const platform = this.dataset.platform;
+                
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.platform-content').forEach(c => c.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.querySelector(`.platform-content[data-platform="${platform}"]`).classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>
